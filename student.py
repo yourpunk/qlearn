@@ -1,59 +1,59 @@
-from blockworld import BlockWorldEnv
 import random
-
+import time
+from collections import defaultdict
+from blockworld import BlockWorldEnv
+ 
 class QLearning():
-	# don't modify the methods' signatures!
-	def __init__(self, env: BlockWorldEnv):
-		self.env = env
-
-	def train(self):
-		# Use BlockWorldEnv to simulate the environment with reset() and step() methods.
-
-		# s = self.env.reset()
-		# s_, r, done = self.env.step(a)
-
-		pass
-
-	def act(self, s):
-		random_action = random.choice( s[0].get_actions() )
-		return random_action
-
-if __name__ == '__main__':
-	# Here you can test your algorithm. Stick with N <= 4
-	N = 4
-
-	env = BlockWorldEnv(N)
-	qlearning = QLearning(env)
-
-	# Train
-	qlearning.train()
-
-	# Evaluate
-	test_env = BlockWorldEnv(N)
-
-	test_problems = 10
-	solved = 0
-	avg_steps = []
-
-	for test_id in range(test_problems):
-		s, _ = test_env.reset()
-		done = False
-
-		print(f"\nProblem {test_id}:")
-		print(f"{s[0]} -> {s[1]}")
-
-		for step in range(50): 	# max 50 steps per problem
-			a = qlearning.act(s)
-			s_, r, done, truncated, _ = test_env.step(a)
-
-			print(f"{a}: {s[0]}")
-
-			s = s_
-
-			if done:
-				solved += 1
-				avg_steps.append(step + 1)
-				break
-
-	avg_steps = sum(avg_steps) / len(avg_steps)
-	print(f"Solved {solved}/{test_problems} problems, with average number of steps {avg_steps}.")
+    def __init__(self, env: BlockWorldEnv, alpha=0.1, gamma=0.9, epsilon=0.2):
+        self.env = env
+        self.Q = defaultdict(float)
+        self.alpha = alpha
+        self.gamma = gamma
+        self.epsilon = epsilon
+ 
+    def serialize_state(self, state, goal):
+        return (tuple(sorted(state.get_state())), tuple(sorted(goal.get_state())))
+ 
+    def choose_action(self, state, goal):
+        actions = state.get_actions()
+        if not actions:
+            return None
+        if random.random() < self.epsilon:
+            return random.choice(actions)
+        s_key = self.serialize_state(state, goal)
+        q_vals = [(self.Q[(s_key, a)], a) for a in actions]
+        max_q = max(q_vals, key=lambda x: x[0])[0]
+        best_actions = [a for q, a in q_vals if q == max_q]
+        return random.choice(best_actions)
+ 
+    def train(self):
+        start_time = time.time()
+        while time.time() - start_time < 30:
+            (state, goal), _ = self.env.reset()
+            for _ in range(50):
+                state_key = self.serialize_state(state, goal)
+                actions = state.get_actions()
+                if not actions:
+                    break
+                action = self.choose_action(state, goal)
+                (new_state, _), reward, done, _, _ = self.env.step(action)
+                new_key = self.serialize_state(new_state, goal)
+                future_actions = new_state.get_actions()
+                max_future_q = max([self.Q[(new_key, a)] for a in future_actions], default=0.0)
+                self.Q[(state_key, action)] += self.alpha * (
+                    reward + self.gamma * max_future_q - self.Q[(state_key, action)]
+                )
+                state = new_state
+                if done:
+                    break
+ 
+    def act(self, s):
+        state, goal = s
+        actions = state.get_actions()
+        if not actions:
+            return None
+        s_key = self.serialize_state(state, goal)
+        q_vals = [(self.Q[(s_key, a)], a) for a in actions]
+        max_q = max(q_vals, key=lambda x: x[0])[0]
+        best_actions = [a for q, a in q_vals if q == max_q]
+        return random.choice(best_actions)
