@@ -1,8 +1,3 @@
-###
-# This file is not part of the submission. Do not change it!
-# You can play with the environment by directly running `python blockworld.py`.
-##
-
 import random, copy, numpy as np, ast
 
 def _get_random_state(num_obj):
