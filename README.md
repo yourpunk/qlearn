@@ -1,45 +1,81 @@
-# 💻 Q-Learning Agent 
-### Overview
-This is a small Q-Learning-based reinforcement learning project, created as part of a school assignment. The task was to implement the core logic of a **Q-learning agent** that interacts with a simple environment — the Block World.<br> The code simulates a reinforcement learning scenario where an agent learns to navigate a grid-like environment using the Q-Learning algorithm. The environment and visual logic are handled in ``blockworld.py``, while the main focus of this repository is the core learning logic implemented in ``student.py``.
+# 🤖 Q-Learning Agent: Block World Edition
 
-## 🧠 What I Did
-- I implemented the Q-Learning agent in student.py, including:
-- Q-table initialization
-- Action selection using epsilon-greedy policy
-- Q-value updates
-- Agent training loop and performance tracking
+A reinforcement learning agent that learns to navigate a grid-based environment using the **Q-Learning algorithm**.
 
-## 🗂️ Project Structure
-``` graphql
+This project simulates an agent exploring a discrete environment — balancing exploration vs exploitation, learning through feedback, and improving over time.  
+Visualized using a lightweight `blockworld.py` environment.
+
+---
+
+## 🎯 Why This Exists
+
+Most beginner RL agents feel like “proof-of-concept math”.  
+I wanted to build something that **actually behaves** like an agent:
+
+- learns smarter paths over time  
+- balances randomness and logic  
+- uses a minimal, readable Q-table structure
+
+---
+
+## 🧠 What I Built
+
+My implementation lives in `qlearn.py` and covers:
+
+- ✅ Q-table initialization (dictionary-based, sparse-safe)
+- 🎲 Action selection via **ε-greedy** strategy
+- 🔁 Q-value update rule:  
+  `Q(s, a) = Q(s, a) + α [reward + γ * max Q(s', a') - Q(s, a)]`
+- 📈 Training loop with episode tracking
+- 🧪 Run-time feedback to visualize learning progression
+
+---
+
+## 🗂️ File Structure
+
+```text
 qlearn-main/
-├── blockworld.py     # Simulation environment
+├── blockworld.py     # Visualization & environment logic
 ├── student.py        # Q-Learning agent logic (my part 🩷)
-└── README.md         # Project overview
+└── README.md         # You're here.
 ```
 
-## 🧪 How to Run
-> Make sure you have Python 3 installed.
+---
 
-To run the simulation:  
-``` bash
+## 🚀 How to Run
+
+> Requires Python 3.<br> No external libraries needed.
+```bash
 python blockworld.py
 ```
-This will launch the learning process and visualize how the agent learns over time.
+Agent will begin learning in the visual environment — you’ll see its decisions evolve over time.
 
-## ⚙️ Dependencies
-Only standard Python libraries are used (no external dependencies).
+---
 
-## 🐣 Status
-✅ Complete – The learning agent is functional and demonstrates basic reinforcement learning behavior.
+## ✨ What I Explored
+This wasn't just about plugging in a formula. I wanted to:
+- understand how RL agents adapt over episodes
+- test different ε and α values to see learning speed trade-offs
+- visualize why some policies converge while others fail
 
-## 📚 Learnings
-This project helped me understand:
-- How Q-Learning works in practice
-- The importance of exploration vs. exploitation
-- How to implement and debug reinforcement learning logic
+---
+
+## ⚙️ Tech Notes
+
+- **Environment**: 2D grid world with states and reward conditions
+- **State encoding**: stringified coordinates
+- **Q-table**: nested Python dict `{state: {action: value}}`
+- **Default behavior**: 1000 episodes, ε=0.1, α=0.5, γ=0.9
+Can be tweaked easily in `blockworld.py`.
+
+---
+
+## 💡 Takeaway
+Reinforcement learning isn’t about big frameworks — it’s about designing logic that improves over time.
+This agent may be simple, but it thinks, fails, adapts — and that’s exactly what makes it cool.
+
+---
 
 ## 👤 Author
-🚀 Created by Aleksandra Kenig (aka [yourpunk](https://github.com/yourpunk)). 
-
-
-💌 Wanna collab or throw some feedback? You know where to find me.
+🦾 Crafted by Aleksandra Kenig (aka [yourpunk](https://github.com/yourpunk)).<br>
+💌 Got questions, ideas, or just want to nerd out about RL? Ping me.
