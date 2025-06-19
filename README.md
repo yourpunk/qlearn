@@ -76,6 +76,12 @@ This agent may be simple, but it thinks, fails, adapts — and that’s exactly 
 
 ---
 
+## 📜 License
+
+**MIT**. Use it, fork it, break it. Just don’t ship it without understanding it.
+
+---
+
 ## 👤 Author
 🦾 Crafted by Aleksandra Kenig (aka [yourpunk](https://github.com/yourpunk)).<br>
 💌 Got questions, ideas, or just want to nerd out about RL? Ping me.
