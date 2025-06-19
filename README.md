@@ -36,7 +36,7 @@ My implementation lives in `qlearn.py` and covers:
 ```text
 qlearn-main/
 ├── blockworld.py     # Visualization & environment logic
-├── student.py        # Q-Learning agent logic (my part 🩷)
+├── qlearn.py        # Q-Learning agent logic (my part 🩷)
 └── README.md         # You're here.
 ```
 
